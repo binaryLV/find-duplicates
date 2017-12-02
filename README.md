@@ -77,4 +77,6 @@ Great! Feel free to do it :)
 Do you want to make a small donation?<br/>
 Oh well, think again.
 
+http://paypal.me/andrejssitals/5
+
 bitcoin:1AgWFzUqcgXng7GKDecNS4f93G1Hi3hX2J
