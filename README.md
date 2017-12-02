@@ -59,10 +59,22 @@ Add some command line arguments:
 
 **Low priority**
 
-Replace hashing files and comparing hashes with comparing actual files?
+*Replace hashing files and comparing hashes with comparing actual files?*
 
 Current solution is straightforward and it works perfectly well for me. Hashing (SHA1) is pretty fast. Most of the time is spent on reading files which is not a huge issue when using SSD.
 
+Comparing actual files may be faster, when there are files with the same size, but with different contents. Though, it's slightly harder to implement. Comparing 2 files is easy, comparing and grouping arbitrary number of files while reading them only once takes more effort.
+
 # Donations
-Did you find this script useful? Did it help you to clean up your photo collection? Did it help you in any other way? Great!
+Did you find this script useful?<br/>
+Did it help you to clean up your photo collection?<br/>
+Did it help you in any other way?<br/>
+Great!
+
+Do you want to use it for free, without restrictions, at home, in your car or anywhere else?<br/>
+Great! Feel free to do it :)
+
+Do you want to make a small donation?<br/>
+Oh well, think again.
+
 bitcoin:1AgWFzUqcgXng7GKDecNS4f93G1Hi3hX2J
