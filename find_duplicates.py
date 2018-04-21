@@ -1,3 +1,4 @@
+import argparse
 import hashlib
 import multiprocessing
 import os
@@ -5,7 +6,6 @@ import time
 
 MEASURE_TIME = True
 HASH_FUNC = "sha1" # md5, sha1, sha224, sha256, sha384, sha512
-DEFAULT_ROOT_DIR = "."
 LINE_SEP = "-" * 80
 FILE_CHUNK_SIZE = 1024 * 1024
 
@@ -55,19 +55,20 @@ def GetTotalSize(files):
   return FormatSize(sum(f.GetFileSize() for f in files))
 
 
-def CollectFiles():
+def CollectFiles(root_dirs):
   print "Building list of files...",
   files = []
   zeroSizedFiles = []
   numberOfDirs = -1 # skip root dir
-  for dirpath, dirnames, filenames in os.walk(DEFAULT_ROOT_DIR):
-    numberOfDirs += 1
-    for filename in filenames:
-      file = File(dirpath, filename)
-      if file.GetFileSize() == 0:
-        zeroSizedFiles.append(file)
-      else:
-        files.append(file)
+  for root_dir in root_dirs:
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+      numberOfDirs += 1
+      for filename in filenames:
+        file = File(dirpath, filename)
+        if file.GetFileSize() == 0:
+          zeroSizedFiles.append(file)
+        else:
+          files.append(file)
   print "Done, found %d files in %d directories, %s" % (len(files), numberOfDirs, GetTotalSize(files))
   return files, zeroSizedFiles
 
@@ -153,7 +154,14 @@ def PrintZeroSizedFiles(files):
 
 
 def main():
-  files, zeroSizedFiles = CollectFiles()
+  argParser = argparse.ArgumentParser(description="Script for finding exact copies of files.")
+  argParser.add_argument("-d", "--dir" , action="append")
+  args = argParser.parse_args()
+
+  if args.dir is None:
+    args.dir = [os.getcwd()]
+
+  files, zeroSizedFiles = CollectFiles(args.dir)
   files = FilterFilesBySize(files)
   files = HashFiles(files)
   filesByHash = FilterFilesByHash(files)

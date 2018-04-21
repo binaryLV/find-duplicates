@@ -51,7 +51,6 @@ Finished in 20.84 seconds
 **High priority**
 
 Add some command line arguments:
-* root directory - directory in which searching should be performed
 * search files - search duplicates of specified files
 * list extensions - list file extensions that are present in root directory
 * include extensions - search only files with specified extensions
