@@ -1,4 +1,5 @@
 import argparse
+import glob
 import hashlib
 import multiprocessing
 import os
@@ -55,20 +56,23 @@ def GetTotalSize(files):
   return FormatSize(sum(f.GetFileSize() for f in files))
 
 
-def CollectFiles(root_dirs):
+def CollectFiles(rootDirPatterns):
   print "Building list of files...",
   files = []
   zeroSizedFiles = []
-  numberOfDirs = -1 # skip root dir
-  for root_dir in root_dirs:
-    for dirpath, dirnames, filenames in os.walk(root_dir):
-      numberOfDirs += 1
-      for filename in filenames:
-        file = File(dirpath, filename)
-        if file.GetFileSize() == 0:
-          zeroSizedFiles.append(file)
-        else:
-          files.append(file)
+  numberOfDirs = 0
+  for rootDirPattern in rootDirPatterns:
+    for rootDir in glob.iglob(rootDirPattern):
+      if not os.path.isdir(rootDir):
+        continue
+      for dirpath, dirnames, filenames in os.walk(rootDir):
+        numberOfDirs += 1
+        for filename in filenames:
+          file = File(dirpath, filename)
+          if file.GetFileSize() == 0:
+            zeroSizedFiles.append(file)
+          else:
+            files.append(file)
   print "Done, found %d files in %d directories, %s" % (len(files), numberOfDirs, GetTotalSize(files))
   return files, zeroSizedFiles
 
